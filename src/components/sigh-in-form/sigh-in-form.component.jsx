@@ -6,7 +6,7 @@ import Button from "../button/Button.component";
 import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
-  signIncreateAuthUserWithEmailAndPassword,
+  signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.util";
 
 import "./sign-in-form.styles.scss";
@@ -20,26 +20,23 @@ const SighInForm = () => {
   const [formFields, setFormFields] = useState(defaultformFields);
   const { email, password } = formFields;
 
-  console.log(formFields);
-
   const resetFormFields = () => {
     setFormFields(defaultformFields);
   };
 
   const sighInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const handleSumbit = async (event) => {
     event.pevertDefault();
 
     try {
-      const response = await signIncreateAuthUserWithEmailAndPassword(
+      const { user } = await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
-      console.log(response);
+
       resetFormFields();
     } catch (error) {
       switch (error.code) {
